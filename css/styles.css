@@ -1,6 +1,11 @@
 @charset "utf-8";
 /* CSS Document */
 
+/*Focus ring colour*/
+:focus {
+  outline: 3px dotted #F00;
+};
+
 body, html {
   margin: 0;
   padding: 0;
@@ -47,7 +52,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
 }
 #footer {
-  background-color: #444;
+  background-color: #000;
   color: #aaa;
   font-size: 0.7em;;
   letter-spacing: 1px;
@@ -119,14 +124,14 @@ nav h1 a {
   width: 100%;
   max-width: 1125px;
   margin: 0px auto;
-  background-color: #3397DB;
+  background-color: #185D8C;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
 }
 .filter-options h2 {
   color: white;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: normal;
   line-height: 1;
   margin-top: 20px;
@@ -183,8 +188,8 @@ nav h1 a {
   margin: 0;
   max-width: 100%;
 }
-#restaurants-list li h1 {
-  color: #f18200;
+#restaurants-list li h3 {
+  color: #854700;
   font-family: Arial,sans-serif;
   font-size: 1.4em;
   font-weight: 200;
@@ -202,7 +207,7 @@ nav h1 a {
   width: 100%;
 }
 #restaurants-list li a {
-  background-color: orange;
+  background-color: #854700;
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
@@ -313,6 +318,23 @@ nav h1 a {
   color: #666;
   font-size: 1.2rem;
 }
+
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #BF1722;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  border-bottom-right-radius: 8px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 
 /*Layout Media Queries*/
 @media screen and (min-width: 350px) {
