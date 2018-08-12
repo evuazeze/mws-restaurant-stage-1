@@ -89,6 +89,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.alt = "";
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -106,6 +107,26 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
  */
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
+
+  // Table Caption
+  const caption = document.createElement('caption');
+  caption.innerHTML = `<h3>Opening Hours</h3>`;
+  hours.appendChild(caption);
+
+  // Table Header
+  const row = document.createElement('tr');
+
+  const dayHeader = document.createElement('th');
+  dayHeader.innerHTML = 'Day';
+  row.appendChild(dayHeader);
+
+  const timeHeader = document.createElement('th');
+  timeHeader.innerHTML = 'Time';
+  row.appendChild(timeHeader);
+
+  hours.appendChild(row);
+
+  // Table data
   for (let key in operatingHours) {
     const row = document.createElement('tr');
 
@@ -114,7 +135,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     row.appendChild(day);
 
     const time = document.createElement('td');
-    time.innerHTML = operatingHours[key];
+    time.innerHTML = operatingHours[key].replace(/,/g, '<br>');
     row.appendChild(time);
 
     hours.appendChild(row);
@@ -126,7 +147,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
