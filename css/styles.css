@@ -358,6 +358,14 @@ table th{
 
 
 /*Layout Media Queries*/
+
+@media screen and (max-width: 400px) {
+#breadcrumb li a  {
+    font-size: .9em;
+    padding: 0px;
+}
+}
+
 @media screen and (min-width: 350px) {
  nav h1 a {
   font-size: 1.1em;
