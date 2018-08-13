@@ -1,8 +1,7 @@
-const dynamicCacheName = 'restaurant-dynamic-v15';
+const dynamicCacheName = 'restaurant-dynamic-v17';
 const allCaches = [dynamicCacheName];
 
 self.addEventListener('activate', function(event) {
-  console.log("activate running!");
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(

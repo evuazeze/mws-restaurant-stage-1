@@ -26,7 +26,7 @@ var markers = []
 
   // Ensure refresh is only called once.
   // This works around a bug in "force update on reload".
-  var refreshing;
+  let refreshing;
   navigator.serviceWorker.addEventListener('controllerchange', function() {
     if (refreshing) return;
     window.location.reload();
@@ -151,7 +151,7 @@ var markers = []
  resetRestaurants = (restaurants) => {
   // Remove all restaurants
   self.restaurants = [];
-  const ul = document.getElementById('restaurants-list');
+  const ul = document.querySelector('.restaurants-list');
   ul.innerHTML = '';
 
   // Remove all map markers
@@ -166,7 +166,7 @@ var markers = []
  * Create all restaurants HTML and add them to the webpage.
  */
  fillRestaurantsHTML = (restaurants = self.restaurants) => {
-  const ul = document.getElementById('restaurants-list');
+  const ul = document.querySelector('.restaurants-list');
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
