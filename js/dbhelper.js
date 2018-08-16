@@ -8,7 +8,7 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    return `https://evuazeze.github.io/mws-restaurant-stage-1/data/restaurants.json`;
+    return `./data/restaurants.json`;
   }
 
   /**
