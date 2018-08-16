@@ -101,7 +101,7 @@ footer {
 
 
 /* ====================== Navigation ====================== */
-nav {
+.home-link {
   width: 100%;
   background-color: #252831;
   text-align:center;
@@ -162,6 +162,14 @@ nav h1 a {
 .breadcrumb li a:hover {
   color: #01447e;
   text-decoration: underline;
+}
+
+.breadcrumb [aria-current="page"],
+.breadcrumb [aria-current="page"]:hover
+ {
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 
