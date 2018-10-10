@@ -8,14 +8,14 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
  document.addEventListener('DOMContentLoaded', (event) => {
+  this.dbPromise = DBHelper.openDatabase();
   registerServiceWorker();
   initMap(); // added
   fetchNeighborhoods();
   fetchCuisines();
 });
 
-
- registerServiceWorker = () => {
+registerServiceWorker = () => {
   if (!navigator.serviceWorker) return;
 
   navigator.serviceWorker.register('./sw.js').then(function(reg) {
@@ -139,6 +139,21 @@ var markers = []
     if (error) { // Got an error!
       console.error(error);
     } else {
+      // var restaurants = JSON.parse(restaurants);
+
+      // console.log(JSON.parse(restaurants));
+
+      dbPromise.then(function(db) {
+        if (!db) return;
+
+      var tx = db.transaction('restaurants', 'readwrite');
+      var store = tx.objectStore('restaurants');
+      restaurants.forEach(function(restaurant) {
+        store.put(restaurant);
+      });
+
+    });
+
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
     }
