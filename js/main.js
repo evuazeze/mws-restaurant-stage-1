@@ -8,12 +8,12 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
  document.addEventListener('DOMContentLoaded', (event) => {
+  // this.dbPromise = DBHelper.openDatabase();
   registerServiceWorker();
   initMap(); // added
   fetchNeighborhoods();
   fetchCuisines();
 });
-
 
  registerServiceWorker = () => {
   if (!navigator.serviceWorker) return;
@@ -123,7 +123,7 @@ var markers = []
 } */
 
 /**
- * Update page and map for current restaurants.
+ * Update page, database and map for current restaurants.
  */
  updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
@@ -139,11 +139,32 @@ var markers = []
     if (error) { // Got an error!
       console.error(error);
     } else {
+      // populateDatabase(restaurants)
       resetRestaurants(restaurants);
       fillRestaurantsHTML();
     }
   })
 }
+
+/**
+ * Populate IndexedDB with JSON for offline access.
+ */
+//  populateDatabase = (restaurants) => {
+// // Check for new content before clearing and repopulating database
+// if (Object.keys(restaurants).length === 0) return;
+
+// dbPromise.then(function(db) {
+//   if (!db) return;
+
+//   const tx = db.transaction('restaurants', 'readwrite');
+//   const store = tx.objectStore('restaurants');
+//   store.clear();
+//   restaurants.forEach(function(restaurant) {
+//     store.put(restaurant);
+//   });
+
+// });
+// }
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.

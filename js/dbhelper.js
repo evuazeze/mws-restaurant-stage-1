@@ -2,7 +2,6 @@
  * Common database helper functions.
  */
  class DBHelper {
-
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
