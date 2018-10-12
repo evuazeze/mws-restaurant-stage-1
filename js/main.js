@@ -149,22 +149,22 @@ var markers = []
 /**
  * Populate IndexedDB with JSON for offline access.
  */
-//  populateDatabase = (restaurants) => {
-// // Check for new content before clearing and repopulating database
-// if (Object.keys(restaurants).length === 0) return;
+ populateDatabase = (restaurants) => {
+// Check for new content before clearing and repopulating database
+if (Object.keys(restaurants).length === 0) return;
 
-// dbPromise.then(function(db) {
-//   if (!db) return;
+dbPromise.then(function(db) {
+  if (!db) return;
 
-//   const tx = db.transaction('restaurants', 'readwrite');
-//   const store = tx.objectStore('restaurants');
-//   store.clear();
-//   restaurants.forEach(function(restaurant) {
-//     store.put(restaurant);
-//   });
+  const tx = db.transaction('restaurants', 'readwrite');
+  const store = tx.objectStore('restaurants');
+  store.clear();
+  restaurants.forEach(function(restaurant) {
+    store.put(restaurant);
+  });
 
-// });
-// }
+});
+}
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
