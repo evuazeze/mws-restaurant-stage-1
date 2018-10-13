@@ -8,7 +8,6 @@ var markers = []
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
  document.addEventListener('DOMContentLoaded', (event) => {
-  // this.dbPromise = DBHelper.openDatabase();
   registerServiceWorker();
   initMap(); // added
   fetchNeighborhoods();
@@ -144,26 +143,6 @@ var markers = []
       fillRestaurantsHTML();
     }
   })
-}
-
-/**
- * Populate IndexedDB with JSON for offline access.
- */
- populateDatabase = (restaurants) => {
-// Check for new content before clearing and repopulating database
-if (Object.keys(restaurants).length === 0) return;
-
-dbPromise.then(function(db) {
-  if (!db) return;
-
-  const tx = db.transaction('restaurants', 'readwrite');
-  const store = tx.objectStore('restaurants');
-  store.clear();
-  restaurants.forEach(function(restaurant) {
-    store.put(restaurant);
-  });
-
-});
 }
 
 /**
