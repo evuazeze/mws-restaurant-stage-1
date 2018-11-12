@@ -357,24 +357,26 @@ nav h1 a {
 
 
 #restaurant-container,
-.reviews-container {
+.reviews-container,
+#review-form {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 15px 15px 30px;
   max-width: 530px;
+  width: 100%;
   flex-grow: 1;
   margin: 0 auto;
 }
 
 
-#restaurant-container {
+/*#restaurant-container {
   max-width: 360px;
-}
+}*/
 
 
-.reviews-container {
+/*.reviews-container {
   padding: 15px 15px 80px;
-}
+}*/
 
 
 .reviews-container h3 {
@@ -501,6 +503,91 @@ table th{
   top: 0;
 }
 
+/* ====================== Reviews Form ====================== */
+#review,
+#name {
+  width: 100%;
+}
+
+
+/* Star Rating */
+.rate-area {
+    float:left;
+    border-style: none;
+    padding: 0;
+}
+
+
+.rate-area:not(:checked) > input {
+    position:absolute;
+    /*top:-9999px;*/
+    clip:rect(0,0,0,0);
+}
+
+
+.rate-area:not(:checked) > label {
+    float:right;
+    width:1em;
+    /*padding:0 .1em;*/
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:200%;
+    line-height:1.2;
+    color:lightgrey;
+    text-shadow:1px 1px #bbb;
+}
+
+
+.rate-area:not(:checked) > label:before {
+    content: '★ ';
+}
+
+
+.rate-area > input:checked ~ label {
+    color: gold;
+    text-shadow:1px 1px #c60;
+    font-size:200% !important;
+}
+
+
+.rate-area:not(:checked) > label:hover,
+.rate-area:not(:checked) > label:hover ~ label {
+    color: gold;
+    
+}
+
+
+.rate-area > input:checked + label:hover,
+.rate-area > input:checked + label:hover ~ label,
+.rate-area > input:checked ~ label:hover,
+.rate-area > input:checked ~ label:hover ~ label,
+.rate-area > label:hover ~ input:checked ~ label {
+    color: gold;
+    text-shadow: 1px 1px goldenrod;   
+    
+}
+
+
+.rate-area > label:active {
+    position:relative;
+    top:2px;
+    left:2px;
+}
+
+
+h4 {
+  font-weight: 100;
+  font-style: italic;
+}
+
+#name,
+#review {
+  padding: 5px 5px;
+  margin: 5px 0;
+}
+
+
 
 /* ====================== Responsive Media Queries ====================== */
 @media screen and (max-width: 400px) {
@@ -563,7 +650,8 @@ table th{
   }
 
 
-  .reviews-container {
+  .reviews-container,
+  #review-form {
     margin: 0 auto 0 0;
   }
 }
@@ -580,7 +668,8 @@ table th{
   }
 
 
-  .reviews-container {
+  .reviews-container,
+  #review-form {
     width: calc(50% - 30px);
     min-width: 350px;
   }

@@ -370,6 +370,21 @@ limitations under the License.
 
   }
 
+
+    /**
+   * Fetch all restaurant reveiws.
+   */
+   static fetchRestaurantReviews(id, callback) {
+    fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`)
+    .then(response => response.json())
+    .then(function(data) { // Got a success response from server!
+      callback(null, data);
+    })
+    .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
+      callback(e, null);
+    })
+  }
+
   /**
    * Fetch a restaurant by its ID.
    */
