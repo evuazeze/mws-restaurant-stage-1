@@ -20,7 +20,8 @@ var newMap;
     restaurant_id: self.restaurant.id,
     name: `${formEl[0].value}`,
     rating: document.querySelector('input[name="rating"]:checked').value,
-    comments: `${formEl[6].value}`
+    comments: `${formEl[6].value}`,
+    createdAt: new Date()
   });
 });
 }

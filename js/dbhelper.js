@@ -343,21 +343,35 @@ limitations under the License.
     idb.open('restaurant', 1).then(function(db) {
       const tx = db.transaction('form_data', 'readwrite');
       const store = tx.objectStore('form_data');
-      // data.forEach(function(field) {
-      //   store.put(field);
-      // })
       store.put(data);
-
-      // for (var key in data) {
-      //    var value = data[key];
-      //    store.put(value, key);
-      // }
     })
-    // .then(db => {
-    //   const tx = db.transaction('form-data', 'readwrite');
-    //   const store = tx.objectStore('form-data');
-    //   store.put();
-    // })
+  }
+
+  static storeReviews(data) {
+    idb.open('restaurant', 1).then(function(db) {
+      const tx = db.transaction('reviews', 'readwrite');
+      const store = tx.objectStore('reviews');
+      // store.put(data);
+      data.forEach(function(i) {
+        store.put(i);
+      })
+    })
+  }
+
+  static readFormData() {
+    return idb.open('restaurant', 1).then(function(db) {
+      var tx = db.transaction(['form_data'], 'readonly');
+      var store = tx.objectStore('form_data');
+      return store.getAll();
+    })
+  }
+
+  static readReviews() {
+    return idb.open('restaurant', 1).then(function(db) {
+      var tx = db.transaction(['reviews'], 'readonly');
+      var store = tx.objectStore('reviews');
+      return store.getAll();
+    })
   }
 
   /**
@@ -400,10 +414,28 @@ limitations under the License.
     fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`)
     .then(response => response.json())
     .then(function(data) { // Got a success response from server!
-      callback(null, data);
+      DBHelper.storeReviews(data);
+      callback(null, data.reverse());
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
-      callback(e, null);
+      let formData = DBHelper.readFormData();
+      let reviews = DBHelper.readReviews();
+
+      reviews
+      .then(function(data) {
+       return data.filter(datum => id == datum['restaurant_id']);
+     })
+      .then(function(i) {
+        callback(null, i.reverse());
+      })
+
+      formData
+      .then(function(data) {
+        return data.filter(datum => id == datum['restaurant_id']);
+      })
+      .then(function(i) {
+        callback(null, i.reverse());
+      })
     })
   }
 

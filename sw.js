@@ -13,6 +13,11 @@ createDB = () => {
     upgradeDb.createObjectStore('form_data', {
       autoIncrement: true
     });
+
+    upgradeDb.createObjectStore('reviews', {
+      keyPath: 'id'
+    });
+
     populateDB();
   });
 
