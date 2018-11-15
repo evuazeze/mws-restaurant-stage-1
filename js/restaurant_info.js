@@ -1,16 +1,39 @@
 let restaurant;
 var newMap;
-var formEl = document.getElementById('form');
+
 
 /**
  * Initialize map as soon as the page is loaded.
  */
  document.addEventListener('DOMContentLoaded', (event) => {
   initMap();
+  messageListener();
 });
 
 
+ messageListener = () => {
+  navigator.serviceWorker.addEventListener('message', event => {
+  var formEl = document.getElementById('form');
+  // alert(event.data.msg);
+  console.log(event.data.msg);
+  DBHelper.storeFormData({
+    restaurant_id: self.restaurant.id,
+    name: `${formEl[0].value}`,
+    rating: document.querySelector('input[name="rating"]:checked').value,
+    comments: `${formEl[6].value}`
+  });
+});
+}
 
+// storeFormData = () => {
+//   var formData = new FormData();
+//   formData.append('restaurant_id', self.restaurant.id);
+//   formData.append(form[0].name, form[0].value);
+//   formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
+//   formData.append(form[6].name, form[6].value);
+
+//   console.log(form[0].name, form[1].value);
+// }
 
 
 /**
@@ -252,23 +275,6 @@ var formEl = document.getElementById('form');
   };
 
   var responsePromise = fetch(url, fetchOptions);
-
-  // 3. Use the response
-  // ================================
-  // responsePromise
-  //   // 3.1 Convert the response into JSON-JS object.
-  //   .then(function(response) {
-  //     return response.json();
-  //   })
-  //   // 3.2 Do something with the JSON data
-  //   .then(function(jsonData) {
-  //     console.log(jsonData);
-  //     // document.getElementById('results').innerText =
-  //     // JSON.stringify(jsonData);
-  //   });
-
-    // console.log(formData);
-
 
     event.preventDefault();
   });

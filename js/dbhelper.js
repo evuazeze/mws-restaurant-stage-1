@@ -97,7 +97,7 @@ limitations under the License.
     'keyPath',
     'multiEntry',
     'unique'
-  ]);
+    ]);
 
   proxyRequestMethods(Index, '_index', IDBIndex, [
     'get',
@@ -105,12 +105,12 @@ limitations under the License.
     'getAll',
     'getAllKeys',
     'count'
-  ]);
+    ]);
 
   proxyCursorRequestMethods(Index, '_index', IDBIndex, [
     'openCursor',
     'openKeyCursor'
-  ]);
+    ]);
 
   function Cursor(cursor, request) {
     this._cursor = cursor;
@@ -122,12 +122,12 @@ limitations under the License.
     'key',
     'primaryKey',
     'value'
-  ]);
+    ]);
 
   proxyRequestMethods(Cursor, '_cursor', IDBCursor, [
     'update',
     'delete'
-  ]);
+    ]);
 
   // proxy 'next' methods
   ['advance', 'continue', 'continuePrimaryKey'].forEach(function(methodName) {
@@ -162,7 +162,7 @@ limitations under the License.
     'keyPath',
     'indexNames',
     'autoIncrement'
-  ]);
+    ]);
 
   proxyRequestMethods(ObjectStore, '_store', IDBObjectStore, [
     'put',
@@ -173,16 +173,16 @@ limitations under the License.
     'getAll',
     'getAllKeys',
     'count'
-  ]);
+    ]);
 
   proxyCursorRequestMethods(ObjectStore, '_store', IDBObjectStore, [
     'openCursor',
     'openKeyCursor'
-  ]);
+    ]);
 
   proxyMethods(ObjectStore, '_store', IDBObjectStore, [
     'deleteIndex'
-  ]);
+    ]);
 
   function Transaction(idbTransaction) {
     this._tx = idbTransaction;
@@ -203,11 +203,11 @@ limitations under the License.
   proxyProperties(Transaction, '_tx', [
     'objectStoreNames',
     'mode'
-  ]);
+    ]);
 
   proxyMethods(Transaction, '_tx', IDBTransaction, [
     'abort'
-  ]);
+    ]);
 
   function UpgradeDB(db, oldVersion, transaction) {
     this._db = db;
@@ -223,12 +223,12 @@ limitations under the License.
     'name',
     'version',
     'objectStoreNames'
-  ]);
+    ]);
 
   proxyMethods(UpgradeDB, '_db', IDBDatabase, [
     'deleteObjectStore',
     'close'
-  ]);
+    ]);
 
   function DB(db) {
     this._db = db;
@@ -242,11 +242,11 @@ limitations under the License.
     'name',
     'version',
     'objectStoreNames'
-  ]);
+    ]);
 
   proxyMethods(DB, '_db', IDBDatabase, [
     'close'
-  ]);
+    ]);
 
   // Add cursor iterators
   // TODO: remove this once browsers do the right thing with promises
@@ -336,6 +336,28 @@ limitations under the License.
       var store = tx.objectStore('restaurants');
       return store.getAll();
     })
+  }
+
+
+  static storeFormData(data) {
+    idb.open('restaurant', 1).then(function(db) {
+      const tx = db.transaction('form_data', 'readwrite');
+      const store = tx.objectStore('form_data');
+      // data.forEach(function(field) {
+      //   store.put(field);
+      // })
+      store.put(data);
+
+      // for (var key in data) {
+      //    var value = data[key];
+      //    store.put(value, key);
+      // }
+    })
+    // .then(db => {
+    //   const tx = db.transaction('form-data', 'readwrite');
+    //   const store = tx.objectStore('form-data');
+    //   store.put();
+    // })
   }
 
   /**

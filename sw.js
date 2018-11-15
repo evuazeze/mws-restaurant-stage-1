@@ -9,6 +9,10 @@ createDB = () => {
     var store = upgradeDb.createObjectStore('restaurants', {
       keyPath: 'id'
     });
+
+    upgradeDb.createObjectStore('form_data', {
+      autoIncrement: true
+    });
     populateDB();
   });
 
@@ -102,21 +106,42 @@ populateDB = () => {
   });
 
   // Network First then Caches + Dynamic Cache
+  // TODO: Change to cache first, then network
   self.addEventListener('fetch', function(event) {
     var request = event.request;
-    event.respondWith(
-      fetch(event.request)
-      .then(function(response) {
-        return caches.open(staticCacheName)
-        .then(function(cache) {
-          if (request.url.startsWith('https://api.tiles.mapbox.com')) {
-          cache.put(event.request.url, response.clone());
-        }
-          return response;
+    if (request.method == "GET") {
+      event.respondWith(
+        fetch(event.request)
+        .then(function(response) {
+          return caches.open(staticCacheName)
+          .then(function(cache) {
+            if (request.url.startsWith('https://api.tiles.mapbox.com')) {
+              cache.put(event.request.url, response.clone());
+            }
+            return response;
+          })
         })
-      })
-      .catch(function(error) {
-        return caches.match(event.request);
-      })
-      )
-  });
+        .catch(function(error) {
+          return caches.match(event.request);
+        })
+        )
+    } else if (request.method === "POST") {
+      event.respondWith(
+          // Try to get the response from the network
+
+
+          fetch(event.request)
+          .catch(function() {
+          // If it doesn't work, post a failure message to the client
+          self.clients.matchAll().then(function (clients){
+            clients.forEach(function(client){
+              client.postMessage({
+                msg: "Post unsuccessful.",
+                url: event.request.url
+              });
+            });
+          });
+        })
+          )}
+    })
+
