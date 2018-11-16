@@ -347,6 +347,14 @@ limitations under the License.
     })
   }
 
+  static deleteFormData() {
+    idb.open('restaurant', 1).then(function(db) {
+      const tx = db.transaction('form_data', 'readwrite');
+      const store = tx.objectStore('form_data');
+      store.clear();
+    })
+  }
+
   static storeReviews(data) {
     idb.open('restaurant', 1).then(function(db) {
       const tx = db.transaction('reviews', 'readwrite');
@@ -415,6 +423,7 @@ limitations under the License.
     .then(response => response.json())
     .then(function(data) { // Got a success response from server!
       DBHelper.storeReviews(data);
+
       callback(null, data.reverse());
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
