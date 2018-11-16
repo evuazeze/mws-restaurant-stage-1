@@ -13,34 +13,31 @@ var newMap;
 
  messageListener = () => {
   navigator.serviceWorker.addEventListener('message', event => {
-  var formEl = document.getElementById('form');
-  // alert(event.data.msg);
-  console.log(event.data.msg);
-  DBHelper.storeFormData({
-    restaurant_id: self.restaurant.id,
-    name: `${formEl[0].value}`,
-    rating: document.querySelector('input[name="rating"]:checked').value,
-    comments: `${formEl[6].value}`,
-    createdAt: new Date()
+    var formEl = document.getElementById('form');
+    alert(event.data.msg);
+
+    DBHelper.storeFormData({
+      restaurant_id: self.restaurant.id,
+      name: `${formEl[0].value}`,
+      rating: document.querySelector('input[name="rating"]:checked').value,
+      comments: `${formEl[6].value}`,
+      createdAt: new Date()
+    });
   });
-});
 }
 
-// storeFormData = () => {
-//   var formData = new FormData();
-//   formData.append('restaurant_id', self.restaurant.id);
-//   formData.append(form[0].name, form[0].value);
-//   formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
-//   formData.append(form[6].name, form[6].value);
-
-//   console.log(form[0].name, form[1].value);
-// }
+handleConnectionChange = (event) => {
+  if(event.type == "online"){
+    postOfflineReviewsToServer();
+  }
+}
 
 
 /**
  * Initialize leaflet map
  */
  initMap = () => {
+  window.addEventListener('online', handleConnectionChange);
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
@@ -177,12 +174,16 @@ var newMap;
  * Create all reviews HTML and add them to the webpage.
  */
  fillReviewsHTML = () => {
-
   DBHelper.fetchRestaurantReviews(self.restaurant.id, (error, reviews) => {
     const container = document.querySelector('.reviews-container');
-    const title = document.createElement('h3');
-    title.innerHTML = 'Reviews';
-    container.appendChild(title);
+
+    const existingTitle = document.querySelector('#title');
+    if (!existingTitle) {
+      const title = document.createElement('h3');
+      title.setAttribute('id', 'title');
+      title.innerHTML = 'Reviews';
+      container.appendChild(title);
+    }
 
     if (!reviews) {
       const noReviews = document.createElement('p');
@@ -277,8 +278,8 @@ var newMap;
 
   var responsePromise = fetch(url, fetchOptions);
 
-    event.preventDefault();
-  });
+  event.preventDefault();
+});
 
   const nameLabel = document.createElement('label');
   nameLabel.setAttribute('for', 'name');
@@ -333,6 +334,48 @@ var newMap;
   form.appendChild(submitReviewButton);
 
   container.appendChild(form);
+}
+
+postOfflineReviewsToServer = () => {
+  // 1. Setup the request
+  // ================================
+  // 1.1 Headers
+  var headers = new Headers();
+  // Tell the server we want JSON back
+  headers.set('Accept', 'application/json');
+
+  // 1.2 Form Data
+  // We need to properly format the submitted fields.
+  // Here we will use the same format the browser submits POST forms.
+  // You could use a different format, depending on your server, such
+  // as JSON or XML.
+  var data = DBHelper.readFormData();
+
+  data
+  .then(function(i) {
+    for (var t = 0; t < i.length; t++) {
+      let obj = i[t];
+      var formData = new FormData();
+      for (let key in obj) {
+        var value = obj[key];
+        formData.append(key, value);
+      }
+
+      var url = 'http://localhost:1337/reviews/';
+      var fetchOptions = {
+        method: 'POST',
+        headers,
+        body: formData
+      };
+
+      var response = fetch(url, fetchOptions);
+      response
+      .then(function(){
+        DBHelper.deleteFormData();
+      })
+
+    }
+  })
 }
 
 createStarRating = () => {

@@ -110,24 +110,23 @@ populateDB = () => {
     event.waitUntil(cleanCache());
   });
 
-  // Network First then Caches + Dynamic Cache
-  // TODO: Change to cache first, then network
+  // Caches First then Network  + Dynamic Cache
   self.addEventListener('fetch', function(event) {
     var request = event.request;
     if (request.method == "GET") {
       event.respondWith(
-        fetch(event.request)
+        caches.match(request)
         .then(function(response) {
-          return caches.open(staticCacheName)
-          .then(function(cache) {
-            if (request.url.startsWith('https://api.tiles.mapbox.com')) {
-              cache.put(event.request.url, response.clone());
-            }
-            return response;
+          return response || fetch(event.request)
+          .then(function(response) {
+            return caches.open(staticCacheName)
+            .then(function(cache) {
+              if (request.url.startsWith('https://api.tiles.mapbox.com')) {
+                cache.put(event.request.url, response.clone());
+              }
+              return response;
+            })
           })
-        })
-        .catch(function(error) {
-          return caches.match(event.request);
         })
         )
     } else if (request.method === "POST") {
