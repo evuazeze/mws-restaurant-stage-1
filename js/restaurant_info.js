@@ -7,16 +7,16 @@ var newMap;
  */
  document.addEventListener('DOMContentLoaded', (event) => {
   initMap();
-  messageListener();
+  failedPostListener();
 });
 
 
- messageListener = () => {
+ failedPostListener = () => {
   navigator.serviceWorker.addEventListener('message', event => {
     var formEl = document.getElementById('form');
     alert(event.data.msg);
 
-    DBHelper.storeFormData({
+    DBHelper.saveFailedPostReview({
       restaurant_id: self.restaurant.id,
       name: `${formEl[0].value}`,
       rating: document.querySelector('input[name="rating"]:checked').value,
@@ -349,15 +349,15 @@ postOfflineReviewsToServer = () => {
   // Here we will use the same format the browser submits POST forms.
   // You could use a different format, depending on your server, such
   // as JSON or XML.
-  var data = DBHelper.readFormData();
+  var reviews = DBHelper.readFailedPostReviews();
 
-  data
-  .then(function(i) {
-    for (var t = 0; t < i.length; t++) {
-      let obj = i[t];
+  reviews
+  .then(function(reviews) {
+    for (var index = 0; index < reviews.length; index++) {
+      let review = reviews[index];
       var formData = new FormData();
-      for (let key in obj) {
-        var value = obj[key];
+      for (let key in review) {
+        var value = review[key];
         formData.append(key, value);
       }
 
@@ -371,7 +371,7 @@ postOfflineReviewsToServer = () => {
       var response = fetch(url, fetchOptions);
       response
       .then(function(){
-        DBHelper.deleteFormData();
+        DBHelper.deleteFailedPostReview();
       })
 
     }

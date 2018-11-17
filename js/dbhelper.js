@@ -330,7 +330,7 @@ limitations under the License.
     return `http://localhost:${port}/restaurants`;
   }
 
-  static readDB() {
+  static readSavedRestaurants() {
     return idb.open('restaurant', 1).then(function(db) {
       var tx = db.transaction(['restaurants'], 'readonly');
       var store = tx.objectStore('restaurants');
@@ -339,7 +339,7 @@ limitations under the License.
   }
 
 
-  static storeFormData(data) {
+  static saveFailedPostReview(data) {
     idb.open('restaurant', 1).then(function(db) {
       const tx = db.transaction('form_data', 'readwrite');
       const store = tx.objectStore('form_data');
@@ -347,7 +347,7 @@ limitations under the License.
     })
   }
 
-  static deleteFormData() {
+  static deleteFailedPostReview() {
     idb.open('restaurant', 1).then(function(db) {
       const tx = db.transaction('form_data', 'readwrite');
       const store = tx.objectStore('form_data');
@@ -355,18 +355,18 @@ limitations under the License.
     })
   }
 
-  static storeReviews(data) {
+  static saveServerReviews(reviews) {
     idb.open('restaurant', 1).then(function(db) {
       const tx = db.transaction('reviews', 'readwrite');
       const store = tx.objectStore('reviews');
       // store.put(data);
-      data.forEach(function(i) {
-        store.put(i);
+      reviews.forEach(function(review) {
+        store.put(review);
       })
     })
   }
 
-  static readFormData() {
+  static readFailedPostReviews() {
     return idb.open('restaurant', 1).then(function(db) {
       var tx = db.transaction(['form_data'], 'readonly');
       var store = tx.objectStore('form_data');
@@ -374,7 +374,7 @@ limitations under the License.
     })
   }
 
-  static readReviews() {
+  static readSavedServerReviews() {
     return idb.open('restaurant', 1).then(function(db) {
       var tx = db.transaction(['reviews'], 'readonly');
       var store = tx.objectStore('reviews');
@@ -392,7 +392,7 @@ limitations under the License.
       callback(null, data);
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
-      DBHelper.readDB()
+      DBHelper.readSavedRestaurants()
       .then(function(restaurants) {
         callback(null, restaurants);
       })
@@ -422,28 +422,28 @@ limitations under the License.
     fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`)
     .then(response => response.json())
     .then(function(data) { // Got a success response from server!
-      DBHelper.storeReviews(data);
+      DBHelper.saveServerReviews(data);
 
       callback(null, data.reverse());
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
-      let formData = DBHelper.readFormData();
-      let reviews = DBHelper.readReviews();
-
-      reviews
-      .then(function(data) {
-       return data.filter(datum => id == datum['restaurant_id']);
+      let savedServerReviews = DBHelper.readSavedServerReviews();
+      let failedPostReviews = DBHelper.readFailedPostReviews();
+      savedServerReviews
+      .then(function(reviews) {
+       return reviews.filter(review => id == review['restaurant_id']);
      })
-      .then(function(i) {
-        callback(null, i.reverse());
+      .then(function(restaurantReviews) {
+        callback(null, restaurantReviews.reverse());
       })
 
-      formData
-      .then(function(data) {
-        return data.filter(datum => id == datum['restaurant_id']);
+
+      failedPostReviews
+      .then(function(reviews) {
+        return reviews.filter(review => id == review['restaurant_id']);
       })
-      .then(function(i) {
-        callback(null, i.reverse());
+      .then(function(restaurantReviews) {
+        callback(null, restaurantReviews.reverse());
       })
     })
   }
