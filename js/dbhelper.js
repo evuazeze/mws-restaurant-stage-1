@@ -427,23 +427,25 @@ limitations under the License.
       callback(null, data.reverse());
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
-      let savedServerReviews = DBHelper.readSavedServerReviews();
       let failedPostReviews = DBHelper.readFailedPostReviews();
-      savedServerReviews
-      .then(function(reviews) {
-       return reviews.filter(review => id == review['restaurant_id']);
-     })
-      .then(function(restaurantReviews) {
-        callback(null, restaurantReviews.reverse());
-      })
-
-
       failedPostReviews
       .then(function(reviews) {
         return reviews.filter(review => id == review['restaurant_id']);
       })
       .then(function(restaurantReviews) {
         callback(null, restaurantReviews.reverse());
+      })
+      .then(function() {
+
+        let savedServerReviews = DBHelper.readSavedServerReviews();
+        savedServerReviews
+        .then(function(reviews) {
+         return reviews.filter(review => id == review['restaurant_id']);
+       })
+        .then(function(restaurantReviews) {
+          callback(null, restaurantReviews.reverse());
+        })
+
       })
     })
   }
