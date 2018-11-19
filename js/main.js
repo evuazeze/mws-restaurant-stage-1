@@ -185,6 +185,8 @@ var markers = []
   image.alt = `Image of ${restaurant.name} Restaurant`;
   li.append(image);
 
+  li.append(createFavouriteButton(restaurant));
+
   const name = document.createElement('h3');
   name.innerHTML = restaurant.name;
   li.append(name);
@@ -203,6 +205,88 @@ var markers = []
   li.append(more)
 
   return li
+}
+
+createFavouriteButton = (restaurant) => {
+  const favoriteButtonArea = document.createElement('div');
+  favoriteButtonArea.setAttribute('class', 'favorite-button');
+
+  const favoriteButtonContainer = document.createElement('div');
+  favoriteButtonArea.append(favoriteButtonContainer);
+
+  const checkBox = document.createElement('input');
+  checkBox.type = 'checkbox';
+  checkBox.setAttribute('id', `${restaurant.id}`);
+  checkBox.className = 'love';
+  favoriteButtonContainer.append(checkBox);
+
+  if (restaurant.is_favorite === 'true') {
+    checkBox.setAttribute('checked', 'true');
+  }
+
+  checkBox.addEventListener( 'change', function() {
+    if(this.checked) {
+        // Favorite button is checked
+        var headers = new Headers();
+        // Tell the server we want JSON back
+        headers.set('Content-Length', '0');
+
+        var url = `http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=true`;
+        var fetchOptions = {
+          method: 'PUT',
+          headers
+        };
+
+        fetch(url, fetchOptions);
+
+      } else {
+        // Favorite is not checked
+        var headers = new Headers();
+        headers.set('Content-Length', '0');
+
+        var url = `http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=false`;
+        var fetchOptions = {
+          method: 'PUT',
+          headers
+        };
+
+        fetch(url, fetchOptions);
+      }
+    });
+
+  const favoriteLabel = document.createElement('label');
+  favoriteLabel.setAttribute('for', `${restaurant.id}`);
+  favoriteButtonContainer.append(favoriteLabel);
+
+  const favoriteSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  favoriteSVG.setAttribute('id', 'heart-svg');
+  favoriteSVG.setAttribute('viewBox', '467 392 58 57');
+  // favoriteSVG.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+  favoriteLabel.append(favoriteSVG);
+
+  const favoriteG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  favoriteG.setAttribute('id', 'Group');
+  favoriteG.setAttribute('fill', 'none');
+  favoriteG.setAttribute('fill-rule', 'evenodd');
+  favoriteG.setAttribute('transform', 'translate(467 392)');
+  favoriteSVG.append(favoriteG);
+
+  const favoritePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  favoritePath.setAttribute('d', 'M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z');
+  favoritePath.setAttribute('id', 'heart');
+  favoritePath.setAttribute('fill', '#AAB8C2');
+  favoriteG.append(favoritePath);
+
+  const favoriteCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  favoriteCircle.setAttribute('id', 'main-circ');
+  favoriteCircle.setAttribute('fill', '#E2264D');
+  favoriteCircle.setAttribute('opacity', '0');
+  favoriteCircle.setAttribute('cx', '29.5');
+  favoriteCircle.setAttribute('cy', '29.5');
+  favoriteCircle.setAttribute('r', '1.5');
+  favoriteG.append(favoriteCircle);
+
+  return favoriteButtonArea;
 }
 
 /**
