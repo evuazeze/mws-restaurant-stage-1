@@ -217,6 +217,7 @@ createFavouriteButton = (restaurant) => {
   const checkBox = document.createElement('input');
   checkBox.type = 'checkbox';
   checkBox.setAttribute('id', `${restaurant.id}`);
+  checkBox.setAttribute('aria-label', `${restaurant.name} favorite button`);
   checkBox.className = 'love';
   favoriteButtonContainer.append(checkBox);
 
@@ -259,13 +260,15 @@ createFavouriteButton = (restaurant) => {
   favoriteButtonContainer.append(favoriteLabel);
 
   const favoriteSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-  favoriteSVG.setAttribute('id', 'heart-svg');
+  // favoriteSVG.setAttribute('id', 'heart-svg');
+  favoriteSVG.className = 'heart-svg';
   favoriteSVG.setAttribute('viewBox', '467 392 58 57');
   // favoriteSVG.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   favoriteLabel.append(favoriteSVG);
 
   const favoriteG = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-  favoriteG.setAttribute('id', 'Group');
+  // favoriteG.setAttribute('id', 'Group');
+  favoriteG.className = 'Group';
   favoriteG.setAttribute('fill', 'none');
   favoriteG.setAttribute('fill-rule', 'evenodd');
   favoriteG.setAttribute('transform', 'translate(467 392)');
@@ -273,12 +276,12 @@ createFavouriteButton = (restaurant) => {
 
   const favoritePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
   favoritePath.setAttribute('d', 'M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z');
-  favoritePath.setAttribute('id', 'heart');
+  favoritePath.setAttribute('class', 'heart');
   favoritePath.setAttribute('fill', '#AAB8C2');
   favoriteG.append(favoritePath);
 
   const favoriteCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-  favoriteCircle.setAttribute('id', 'main-circ');
+  favoriteCircle.setAttribute('class', 'main-circ');
   favoriteCircle.setAttribute('fill', '#E2264D');
   favoriteCircle.setAttribute('opacity', '0');
   favoriteCircle.setAttribute('cx', '29.5');
@@ -287,7 +290,7 @@ createFavouriteButton = (restaurant) => {
   favoriteG.append(favoriteCircle);
 
   return favoriteButtonArea;
-}
+  }
 
 /**
  * Add markers for current restaurants to the map.

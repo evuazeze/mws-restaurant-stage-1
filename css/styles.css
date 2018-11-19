@@ -309,25 +309,61 @@ svg {
   overflow: visible;
   width: 60px;
 }
-svg #heart {
+svg .heart {
   transform-origin: center;
   animation: animateHeartOut 0.3s linear forwards;
 }
-svg #main-circ {
+svg .main-circ {
   transform-origin: 29.5px 29.5px;
 }
 .love {
-  display: none;
+  position: absolute;
+  opacity: 0;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid transparent;
+  margin-top: 24px;
+  margin-left: 22px;
+  text-indent: -9999px;
 }
-.love:checked + label svg #heart {
+
+/*.love:focus + label svg #heart,
+.love:checked:focus + label svg #heart
+ {
+  animation: animateFocus 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}*/
+
+.love:checked + label svg .heart {
   transform: scale(0.2);
   fill: #e2264d;
   animation: animateHeart 0.3s linear forwards 0.25s;
 }
-.love:checked + label svg #main-circ {
+.love:checked + label svg .main-circ {
   transition: all 2s;
   animation: animateCircle 0.3s linear forwards;
   opacity: 1;
+}
+
+@keyframes animateFocus {
+    10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 @keyframes animateCircle {
