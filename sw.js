@@ -1,4 +1,9 @@
-importScripts('./js/idb.js');
+if ('function' === typeof importScripts) {
+  importScripts('./js/idb.js');
+  importScripts('https://www.gstatic.com/firebasejs/5.7.2/firebase.js');
+  importScripts('./js/firebaseinit.js');
+}
+// let idb = require('idb');
 const staticCacheName = 'restaurant-static-v1';
 const dynamicCacheName = 'restaurant-dynamic-v1';
 const allCaches = [staticCacheName, dynamicCacheName];
@@ -25,21 +30,20 @@ createDB = () => {
 }
 
 populateDB = () => {
-  return fetch(`http://localhost:1337/restaurants`)
-  .then(response => response.json())
+  return firebase.database().ref('/restaurantReviews/data/restaurants').once('value')
     .then(function(restaurants) { // Got a success response from server!
       dbPromise.then(db => {
         const tx = db.transaction('restaurants', 'readwrite');
         const store = tx.objectStore('restaurants');
         restaurants.forEach(function(restaurant) {
-          store.put(restaurant);
+          store.put(restaurant.val());
         });
       })
     })
-    .catch(function(e) { // Oops!. Got an error from server.
-      const error = (`Request failed. ${e}`);
-      console.log(error);
-    })
+    // .catch(function(e) { // Oops!. Got an error from server.
+    //   const error = (`Request failed. ${e}`);
+    //   console.log(error);
+    // })
   }
 
   cleanCache = () => {
