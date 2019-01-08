@@ -388,6 +388,10 @@ limitations under the License.
     })
   }
 
+  static writeComment(comment) {
+    firebase.database().ref('/restaurantReviews/data/reviews').push(comment);
+  }
+
   /**
    * Fetch all restaurants.
    */
@@ -443,9 +447,20 @@ limitations under the License.
    */
    static fetchRestaurantReviews(id, callback) {
     return new Promise(function(resolve, reject) {
-      firebase.database().ref('/restaurantReviews/data/reviews').once('value')
+      firebase.database().ref('/restaurantReviews/data/reviews/').once('value')
       .then(function(reviews) {
-        return reviews.val().filter(review => id == review['restaurant_id']);
+        var comments = [];
+        var count = 0;
+        for (var key in reviews.val()) {
+          comments[count] = reviews.val()[key];
+          comments[count].id = count;
+          count = count + 1;
+        }
+
+        // console.log(comments);
+        // var comments = Object.entries(reviews.val()).map(([]) => ({}));
+        // console.log(comments);
+        return comments.filter(review => id == review['restaurant_id']);
       })
       .then(function(data) { // Got a success response from server!
         DBHelper.saveServerReviews(data);

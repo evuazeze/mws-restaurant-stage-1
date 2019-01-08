@@ -244,39 +244,50 @@ handleConnectionChange = (event) => {
   container.appendChild(title);
 
   const form = document.createElement('form');
-  form.setAttribute('id', 'form');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', 'http://localhost:1337/reviews/');
+  // form.setAttribute('id', 'form');
+  // form.setAttribute('method', 'post');
+  // form.setAttribute('action', 'http://localhost:1337/reviews/');
 
   form.addEventListener('submit', function(event) {
   // 1. Setup the request
   // ================================
   // 1.1 Headers
-  var headers = new Headers();
+  // var headers = new Headers();
   // Tell the server we want JSON back
-  headers.set('Accept', 'application/json');
+  // headers.set('Accept', 'application/json');
 
   // 1.2 Form Data
   // We need to properly format the submitted fields.
   // Here we will use the same format the browser submits POST forms.
   // You could use a different format, depending on your server, such
   // as JSON or XML.
-  var formData = new FormData();
-  formData.append('restaurant_id', self.restaurant.id);
-  formData.append(form[0].name, form[0].value);
-  formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
-  formData.append(form[6].name, form[6].value);
+  // var formData = new FormData();
+  // formData.append('restaurant_id', self.restaurant.id);
+  // formData.append(form[0].name, form[0].value);
+  // formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
+  // formData.append(form[6].name, form[6].value);
+  let date = new Date();
+
+  var comment = {
+    'restaurant_id': self.restaurant.id,
+    name: form.elements['name'].value,
+    rating: document.querySelector('input[name="rating"]:checked').value,
+    comments: form.elements['comments'].value,
+    createdAt: date.toString()
+  }
+
+  DBHelper.writeComment(comment);
 
   // 2. Make the request
   // ================================
-  var url = 'http://localhost:1337/reviews/';
-  var fetchOptions = {
-    method: 'POST',
-    headers,
-    body: formData
-  };
+  // var url = 'http://localhost:1337/reviews/';
+  // var fetchOptions = {
+  //   method: 'POST',
+  //   headers,
+  //   body: formData
+  // };
 
-  var responsePromise = fetch(url, fetchOptions);
+  // var responsePromise = fetch(url, fetchOptions);
 
   event.preventDefault();
 });
@@ -301,14 +312,10 @@ handleConnectionChange = (event) => {
 
   form.appendChild(createStarRating());
 
-  const br3 = document.createElement('br');
-  const br4 = document.createElement('br');
-  const br5 = document.createElement('br');
-  const br6 = document.createElement('br');
-  form.appendChild(br3);
-  form.appendChild(br4);
-  form.appendChild(br5);
-  form.appendChild(br6);
+  form.appendChild(document.createElement('br'));
+  form.appendChild(document.createElement('br'));
+  form.appendChild(document.createElement('br'));
+  form.appendChild(document.createElement('br'));
 
   const reviewLabel = document.createElement('label');
   reviewLabel.setAttribute('for', 'review');
@@ -323,10 +330,8 @@ handleConnectionChange = (event) => {
   reviewInput.setAttribute('required', '');
   form.appendChild(reviewInput);
 
-  const br7 = document.createElement('br');
-  const br8 = document.createElement('br');
-  form.appendChild(br7);
-  form.appendChild(br8);
+  form.appendChild(document.createElement('br'));
+  form.appendChild(document.createElement('br'));
 
   const submitReviewButton = document.createElement('button');
   submitReviewButton.type = 'submit';

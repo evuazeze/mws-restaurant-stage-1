@@ -117,7 +117,7 @@ populateDB = () => {
   // Caches First then Network  + Dynamic Cache
   self.addEventListener('fetch', function(event) {
     var request = event.request;
-    if (request.method == "GET") {
+    if (request.method === "GET") {
       event.respondWith(
         caches.match(request)
         .then(function(response) {
