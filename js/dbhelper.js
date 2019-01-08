@@ -317,6 +317,8 @@ limitations under the License.
 }());
 
 
+
+
 /**
  * Common database helper functions.
  */
@@ -328,6 +330,10 @@ limitations under the License.
    static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
     return `http://localhost:${port}/restaurants`;
+  }
+
+  static get firebaseData() {
+    firebase.database().ref('/restaurantReviews/data/restaurants').once('value')
   }
 
   static readSavedRestaurants() {
@@ -386,16 +392,33 @@ limitations under the License.
    * Fetch all restaurants.
    */
    static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
-    .then(response => response.json())
-    .then(function(data) { // Got a success response from server!
-      callback(null, data);
+    return new Promise(function(resolve, reject) {
+      firebase.database().ref('/restaurantReviews/data/restaurants').once('value')
+      .then(function(snapshot) {
+        if (snapshot.val()) {
+          callback(null, snapshot.val());
+          return resolve();
+        }
+        return reject();
+      })
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
       DBHelper.readSavedRestaurants()
       .then(function(restaurants) {
         callback(null, restaurants);
       })
+
+
+    // fetch(DBHelper.DATABASE_URL)
+    // .then(response => response.json())
+    // .then(function(data) { // Got a success response from server!
+    //   callback(null, data);
+    // })
+    // .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
+    //   DBHelper.readSavedRestaurants()
+    //   .then(function(restaurants) {
+    //     callback(null, restaurants);
+    //   })
 
       // console.log(restaurants);
 
@@ -419,12 +442,16 @@ limitations under the License.
    * Fetch all restaurant reveiws.
    */
    static fetchRestaurantReviews(id, callback) {
-    fetch(`http://localhost:1337/reviews/?restaurant_id=${id}`)
-    .then(response => response.json())
-    .then(function(data) { // Got a success response from server!
-      DBHelper.saveServerReviews(data);
-
-      callback(null, data.reverse());
+    return new Promise(function(resolve, reject) {
+      firebase.database().ref('/restaurantReviews/data/reviews').once('value')
+      .then(function(reviews) {
+        return reviews.val().filter(review => id == review['restaurant_id']);
+      })
+      .then(function(data) { // Got a success response from server!
+        DBHelper.saveServerReviews(data);
+        callback(null, data.reverse());
+        return resolve();
+      })
     })
     .catch(function(e) { // Oops!. Got an error from server. Fallback to IndexedDB.
       let failedPostReviews = DBHelper.readFailedPostReviews();

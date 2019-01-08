@@ -4,6 +4,7 @@ cuisines
 var newMap
 var markers = []
 
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -181,7 +182,7 @@ var markers = []
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.src = restaurant.photograph;
   image.alt = `Image of ${restaurant.name} Restaurant`;
   li.append(image);
 
