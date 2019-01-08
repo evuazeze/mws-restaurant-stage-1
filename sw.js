@@ -95,15 +95,15 @@ populateDB = () => {
           'https://api.tiles.mapbox.com/v4/mapbox.streets/12/1203/1539.jpg70?access_token=pk.eyJ1IjoiZXZ1YXplemUiLCJhIjoiY2prNXoxeWdtMG9vNDNwcDZ5cndwYzQxZCJ9.FjM7EOBjA3p_XzecxcJzMA',
           'https://api.tiles.mapbox.com/v4/mapbox.streets/12/1203/1540.jpg70?access_token=pk.eyJ1IjoiZXZ1YXplemUiLCJhIjoiY2prNXoxeWdtMG9vNDNwcDZ5cndwYzQxZCJ9.FjM7EOBjA3p_XzecxcJzMA',
           'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F1.jpg?alt=media&token=52624176-4e21-41b4-a973-b20a2cdcb976',
-          './img/2.jpg',
-          './img/3.jpg',
-          './img/4.jpg',
-          './img/5.jpg',
-          './img/6.jpg',
-          './img/7.jpg',
-          './img/8.jpg',
-          './img/9.jpg',
-          './img/10.jpg'
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F2.jpg?alt=media&token=1db9b35b-0080-4eb8-9fdf-9ac9d1eabe1b',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F3.jpg?alt=media&token=45a541cf-919b-4dd5-8768-efa252de4db0',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F4.jpg?alt=media&token=4e95d956-e3ea-4cdc-ad53-3f23b55c2e3f',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F5.jpg?alt=media&token=0db99cdc-fbd9-4669-8d50-8e527a5939cd',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F6.jpg?alt=media&token=3e0eb750-4355-4e58-92d2-1a6ad36b04ff',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F7.jpg?alt=media&token=63726648-cdc1-4543-b55d-66daca5d4578',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F8.jpg?alt=media&token=e5ed7e11-d290-4659-b8d7-3ed71747a3ed',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F9.jpg?alt=media&token=9e3793ad-2c76-48c9-bfa1-774a0b497874',
+          'https://firebasestorage.googleapis.com/v0/b/restaurantreviewserver.appspot.com/o/images%2F10.jpg?alt=media&token=efe6a40b-8e45-446a-89b9-6fac3c761500'
           ]);
       })
       );
