@@ -388,6 +388,10 @@ limitations under the License.
     })
   }
 
+  static writeComment(comment) {
+    firebase.database().ref('/restaurantReviews/data/reviews').push(comment);
+  }
+
   /**
    * Fetch all restaurants.
    */

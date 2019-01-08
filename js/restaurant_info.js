@@ -244,39 +244,48 @@ handleConnectionChange = (event) => {
   container.appendChild(title);
 
   const form = document.createElement('form');
-  form.setAttribute('id', 'form');
-  form.setAttribute('method', 'post');
-  form.setAttribute('action', 'http://localhost:1337/reviews/');
+  // form.setAttribute('id', 'form');
+  // form.setAttribute('method', 'post');
+  // form.setAttribute('action', 'http://localhost:1337/reviews/');
 
   form.addEventListener('submit', function(event) {
   // 1. Setup the request
   // ================================
   // 1.1 Headers
-  var headers = new Headers();
+  // var headers = new Headers();
   // Tell the server we want JSON back
-  headers.set('Accept', 'application/json');
+  // headers.set('Accept', 'application/json');
 
   // 1.2 Form Data
   // We need to properly format the submitted fields.
   // Here we will use the same format the browser submits POST forms.
   // You could use a different format, depending on your server, such
   // as JSON or XML.
-  var formData = new FormData();
-  formData.append('restaurant_id', self.restaurant.id);
-  formData.append(form[0].name, form[0].value);
-  formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
-  formData.append(form[6].name, form[6].value);
+  // var formData = new FormData();
+  // formData.append('restaurant_id', self.restaurant.id);
+  // formData.append(form[0].name, form[0].value);
+  // formData.append(form[1].name, document.querySelector('input[name="rating"]:checked').value);
+  // formData.append(form[6].name, form[6].value);
+
+  var comment = {
+    'restaurant_id': self.restaurant.id,
+    form[0].name: form[0].value,
+    form[1].name: document.querySelector('input[name="rating"]:checked').value,
+    form[6].name: form[6].value
+  }
+
+  DBHelper.writeComment(comment);
 
   // 2. Make the request
   // ================================
-  var url = 'http://localhost:1337/reviews/';
-  var fetchOptions = {
-    method: 'POST',
-    headers,
-    body: formData
-  };
+  // var url = 'http://localhost:1337/reviews/';
+  // var fetchOptions = {
+  //   method: 'POST',
+  //   headers,
+  //   body: formData
+  // };
 
-  var responsePromise = fetch(url, fetchOptions);
+  // var responsePromise = fetch(url, fetchOptions);
 
   event.preventDefault();
 });
