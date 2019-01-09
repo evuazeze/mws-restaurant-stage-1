@@ -278,6 +278,7 @@ handleConnectionChange = (event) => {
 
   DBHelper.writeComment(comment);
 
+
   // 2. Make the request
   // ================================
   // var url = 'http://localhost:1337/reviews/';
@@ -288,6 +289,7 @@ handleConnectionChange = (event) => {
   // };
 
   // var responsePromise = fetch(url, fetchOptions);
+
 
   event.preventDefault();
 });
